@@ -1,0 +1,46 @@
+{
+  "name": "explorer.fullstack.cash",
+  "description": "A 'block explorer' for the P2WDB",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Chris Troutner <chris.troutner@gmail.com>",
+  "contributors": [
+    "Daniel Gonzalez <danielhumgon@gmail.com>",
+    "Andre Cabrera <andrecabrera@protonmail.ch>"
+  ],
+  "scripts": {
+    "build": "gatsby build",
+    "build:ipfs": "gatsby build --prefix-paths",
+    "develop": "gatsby develop",
+    "lint": "standard --env mocha --fix",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "npm run lint"
+  },
+  "dependencies": {
+    "gatsby": "^3.7.2",
+    "gatsby-ipfs-web-wallet": "1.25.3",
+    "gatsby-plugin-bch-tx-history": "^1.1.4",
+    "react-json-pretty": "^2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Permissionless-Software-Foundation/explorer.fullstack.cash"
+  },
+  "bugs": {
+    "url": "https://github.com/Permissionless-Software-Foundation/explorer.fullstack.cash/issues"
+  },
+  "devDependencies": {
+    "semantic-release": "^17.4.3",
+    "standard": "^16.0.3"
+  },
+  "release": {
+    "publish": [
+      {
+        "path": "@semantic-release/npm",
+        "npmPublish": false
+      }
+    ]
+  }
+}
