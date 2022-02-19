@@ -19,9 +19,9 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "gatsby": "^3.7.2",
-    "gatsby-ipfs-web-wallet": "1.25.3",
-    "gatsby-plugin-bch-tx-history": "^1.1.4",
+    "adminlte-2-react": "0.2.0-beta.10",
+    "fullstack-gatsby-theme-bch-wallet": "1.0.5",
+    "gatsby": "4.4.0",
     "react-json-pretty": "^2.2.0"
   },
   "repository": {
@@ -32,6 +32,8 @@
     "url": "https://github.com/Permissionless-Software-Foundation/explorer.fullstack.cash/issues"
   },
   "devDependencies": {
+    "colors": "^1.4.0",
+    "mocha": "^9.2.0",
     "semantic-release": "^17.4.3",
     "standard": "^16.0.3"
   },
