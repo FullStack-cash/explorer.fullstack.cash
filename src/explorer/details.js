@@ -1,51 +1,51 @@
-import React from "react"
-import PropTypes from "prop-types"
-import { Row, Col, Box, Button } from "adminlte-2-react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import JSONPretty from "react-json-pretty"
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Row, Col, Box, Button } from 'adminlte-2-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import JSONPretty from 'react-json-pretty'
 
-const HASH_EXPLORER = "https://p2wdb.fullstack.cash/entry/hash/" // PSF p2wdb hash explorer
-const TX_EXPLORER = "https://simpleledger.info/tx/" // BCH Transaction Explorer
+const HASH_EXPLORER = 'https://p2wdb.fullstack.cash/entry/hash/' // PSF p2wdb hash explorer
+const TX_EXPLORER = 'https://simpleledger.info/tx/' // BCH Transaction Explorer
 
 let _this
 class Details extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     _this = this
 
     this.state = {
       entry: {},
-      entryData: {},
+      entryData: {}
     }
   }
 
-  render() {
+  render () {
     const { entry, entryData } = _this.state
     return (
       <>
         <Row>
           <Col sm={12}>
-            <Box className=" border-none mt-2" loaded={!this.state.inFetch}>
-              <Row className="text-center">
+            <Box className=' border-none mt-2' loaded={!this.state.inFetch}>
+              <Row className='text-center'>
                 <Col sm={12}>
-                  <h1 id="SendTokens">
+                  <h1 id='SendTokens'>
                     <FontAwesomeIcon
-                      className="title-icon"
-                      size="xs"
-                      icon="info-circle"
+                      className='title-icon'
+                      size='xs'
+                      icon='info-circle'
                     />
                     <span>Details</span>
                   </h1>
                   {entry._id && (
-                    <Box className="border-none details-data-content">
+                    <Box className='border-none details-data-content'>
                       <p>
                         <b>IS VALID: </b>
                         {entry.isValid}
                       </p>
                       <p>
                         <b>APP ID: </b>
-                        {entry.appId || "none"}
+                        {entry.appId || 'none'}
                       </p>
                       <p>
                         <b>CREATE AT: </b>
@@ -59,8 +59,8 @@ class Details extends React.Component {
                         <b>HASH: </b>
                         <a
                           href={`${HASH_EXPLORER}${entry.hash}`}
-                          target="_blank"
-                          rel="noreferrer"
+                          target='_blank'
+                          rel='noreferrer'
                         >
                           {entry.hash}
                         </a>
@@ -69,8 +69,8 @@ class Details extends React.Component {
                         <b>TRANSACTION ID : </b>
                         <a
                           href={`${TX_EXPLORER}${entry.key}`}
-                          target="_blank"
-                          rel="noreferrer"
+                          target='_blank'
+                          rel='noreferrer'
                         >
                           {entry.key}
                         </a>
@@ -95,7 +95,7 @@ class Details extends React.Component {
                               <>
                                 - <b>Data :</b>
                                 <JSONPretty
-                                  id="json-pretty"
+                                  id='json-pretty'
                                   data={entryData.data}
                                 />
                               </>
@@ -107,11 +107,11 @@ class Details extends React.Component {
                   )}
                 </Col>
                 <Col sm={12}>
-                  <div className="btn-wrapper">
+                  <div className='btn-wrapper'>
                     <Button
-                      text="Close"
-                      type="primary"
-                      className="btn-lg btn-close-entry mr-1 ml-1 mt-1"
+                      text='Close'
+                      type='primary'
+                      className='btn-lg btn-close-entry mr-1 ml-1 mt-1'
                       onClick={_this.handleClose}
                     />
                   </div>
@@ -124,34 +124,34 @@ class Details extends React.Component {
     )
   }
 
-  componentDidMount() {
+  componentDidMount () {
     _this.handleData()
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     if (_this.props.entry._id !== _this.state.entry._id) {
       _this.handleData()
     }
   }
 
-  handleData() {
+  handleData () {
     try {
       const { entry } = _this.props
       _this.setState({
         entry,
-        entryData: entry.value,
+        entryData: entry.value
       })
     } catch (err) {
-      console.warn("Error in handleData()", err)
+      console.warn('Error in handleData()', err)
     }
   }
 
-  handleClose() {
+  handleClose () {
     _this.props.onClose()
   }
 
   // Detects if the input is a string and converts to json object
-  isJson(data) {
+  isJson (data) {
     try {
       JSON.parse(data)
       return true
@@ -162,6 +162,6 @@ class Details extends React.Component {
 }
 Details.propTypes = {
   entry: PropTypes.object,
-  onClose: PropTypes.func,
+  onClose: PropTypes.func
 }
 export default Details

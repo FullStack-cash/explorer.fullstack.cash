@@ -6,5 +6,5 @@
 
 module.exports = {
   /* Your site config here */
-  plugins: ["fullstack-gatsby-theme-bch-wallet"]
+  plugins: ['fullstack-gatsby-theme-bch-wallet']
 }

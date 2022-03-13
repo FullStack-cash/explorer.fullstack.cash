@@ -1,7 +1,9 @@
 import React from 'react'
-import { Row, Col, Content, Box, DataTable } from 'adminlte-2-react'
+import { Row, Col, Content, Box, DataTable, Inputs, Button } from 'adminlte-2-react'
 import Details from './details'
 import './explorer.css'
+const { Text } = Inputs
+
 const axios = require('axios').default
 
 const SERVER = 'https://p2wdb.fullstack.cash/'
@@ -16,7 +18,8 @@ class Explorer extends React.Component {
       showEntry: false,
       data: [],
       entries: [],
-      entryData: null
+      entryData: null,
+      addId: ''
     }
 
     this.firstColumns = [
@@ -52,6 +55,25 @@ class Explorer extends React.Component {
         browserTitle='P2WDB Explorer'
       >
         <Row>
+          {!entryData && (
+            <Box title='Search By Appid' className='text-center'>
+              <Text
+                id='appId'
+                name='appId'
+                placeholder='Enter AppId'
+                label='AppId'
+                labelPosition='above'
+                onChange={this.handleUpdate}
+              />
+              <Button
+                text='Search'
+                type='primary'
+                className='btn-lg btn-close-entry mr-1 ml-1 mt-1'
+                onClick={_this.handleSearchByAppId}
+              />
+            </Box>
+          )}
+
           {entryData && (
             <Col xs={12}>
               <Details entry={entryData} onClose={_this.handleClose} />
@@ -81,6 +103,12 @@ class Explorer extends React.Component {
         </Row>
       </Content>
     )
+  }
+
+  handleUpdate (event) {
+    _this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   async componentDidMount () {
@@ -201,6 +229,30 @@ class Explorer extends React.Component {
     _this.setState({
       entryData: null
     })
+  }
+
+  async handleSearchByAppId () {
+    try {
+      const { appId } = _this.state
+      let entries
+      if (!appId) {
+        entries = await _this.getEntries()
+      } else {
+        const options = {
+          method: 'GET',
+          url: `${SERVER}entry/appid/${appId}`
+        }
+        const result = await axios.request(options)
+        entries = result.data.data
+      }
+
+      _this.setState({
+        entries
+      })
+      _this.generateDataTable(entries)
+    } catch (error) {
+      console.warn(error)
+    }
   }
 }
 
