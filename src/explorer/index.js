@@ -19,7 +19,10 @@ class Explorer extends React.Component {
       data: [],
       entries: [],
       entryData: null,
-      addId: ''
+      addId: '',
+      endpoint: `${SERVER}entry/all/${0}`,
+      isFiltered: false,
+      inFetch: true
     }
 
     this.firstColumns = [
@@ -47,7 +50,7 @@ class Explorer extends React.Component {
   }
 
   render () {
-    const { data, entryData } = _this.state
+    const { data, entryData, isFiltered, appId, inFetch } = _this.state
     return (
       <Content
         title='P2WDB Explorer'
@@ -56,7 +59,7 @@ class Explorer extends React.Component {
       >
         <Row>
           {!entryData && (
-            <Box title='Search By Appid' className='text-center'>
+            <Box loaded={!inFetch} title='Search By Appid' className='text-center'>
               <Text
                 id='appId'
                 name='appId'
@@ -66,7 +69,7 @@ class Explorer extends React.Component {
                 onChange={this.handleUpdate}
               />
               <Button
-                text='Search'
+                text={isFiltered && !appId ? 'Search All' : 'Search'}
                 type='primary'
                 className='btn-lg btn-close-entry mr-1 ml-1 mt-1'
                 onClick={_this.handleSearchByAppId}
@@ -127,16 +130,19 @@ class Explorer extends React.Component {
   }
 
   // REST petition to Get data fron the pw2db
-  async getEntries () {
+  async getEntries (endpoint) {
     try {
+      const url = endpoint || _this.state.endpoint
+      // console.log(`url : ${url}`)
       const options = {
         method: 'GET',
-        url: `${SERVER}entry/all/${0}`,
+        url: url,
         data: {}
       }
       const result = await axios.request(options)
       _this.setState({
-        entries: result.data.data
+        entries: result.data.data,
+        inFetch: false
       })
       return result.data.data
     } catch (err) {
@@ -234,21 +240,21 @@ class Explorer extends React.Component {
   async handleSearchByAppId () {
     try {
       const { appId } = _this.state
-      let entries
+      let endpoint
+      let isFiltered = true
       if (!appId) {
-        entries = await _this.getEntries()
+        endpoint = `${SERVER}entry/all/${0}`
+        isFiltered = false
       } else {
-        const options = {
-          method: 'GET',
-          url: `${SERVER}entry/appid/${appId}`
-        }
-        const result = await axios.request(options)
-        entries = result.data.data
+        endpoint = `${SERVER}entry/appid/${appId}`
       }
-
+      // save the last called endpoint for intervall calls
       _this.setState({
-        entries
+        endpoint,
+        isFiltered,
+        inFetch: true
       })
+      const entries = await _this.getEntries(endpoint)
       _this.generateDataTable(entries)
     } catch (error) {
       console.warn(error)
